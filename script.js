@@ -10,14 +10,31 @@ L.Control.geocoder({
     defaultMarkGeocode: false
 })
 .on('markgeocode', function(e) {
-    const bbox = e.geocode.bbox;
-    const poly = L.polygon([
-        bbox.getSouthEast(),
-        bbox.getNorthEast(),
-        bbox.getNorthWest(),
-        bbox.getSouthWest()
-    ]).addTo(map);
-    map.fitBounds(poly.getBounds());
+    const { center } = e.geocode; // Get the center of the searched location
+    const { lat, lng } = center;
+
+    // Add a red flag at the searched location
+    const userId = 'anonymous'; // Replace with user authentication if needed
+    const flagRef = database.ref('flags').push();
+    flagRef.set({
+        userId,
+        lat,
+        lng
+    });
+
+    // Add the marker to the map
+    const marker = L.marker([lat, lng], { 
+        icon: L.icon({ 
+            iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Red_flag_icon.png', 
+            iconSize: [25, 41] 
+        }) 
+    }).addTo(map);
+
+    // Store marker reference for deletion
+    marker._firebaseKey = flagRef.key;
+
+    // Center the map on the searched location
+    map.setView([lat, lng], 13);
 })
 .addTo(map);
 
@@ -38,12 +55,13 @@ const firebaseConfig = {
     storageBucket: "real-time-map-717f6.firebasestorage.app",
     messagingSenderId: "407674707547",
     appId: "1:407674707547:web:16edde5050d0335b28a97e"
-  };
+};
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
 
+// Add a red flag when the user clicks on the map
 map.on('click', (e) => {
     const { lat, lng } = e.latlng;
     const userId = 'anonymous'; // Replace with user authentication if needed
@@ -57,6 +75,7 @@ map.on('click', (e) => {
     });
 });
 
+// Allow users to delete their own flags by right-clicking
 map.on('contextmenu', (e) => {
     const { lat, lng } = e.latlng;
 
@@ -79,6 +98,7 @@ map.on('contextmenu', (e) => {
     });
 });
 
+// Listen for new flags in Firebase and add them to the map
 database.ref('flags').on('child_added', (snapshot) => {
     const { lat, lng } = snapshot.val();
     const marker = L.marker([lat, lng], { 
