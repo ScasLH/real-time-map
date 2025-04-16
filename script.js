@@ -6,20 +6,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
-// Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyByg7gneIEDzswTRhRi9fB--LzriyuWvUQ",
-    authDomain: "real-time-map-717f6.firebaseapp.com",
-    databaseURL: "https://real-time-map-717f6-default-rtdb.firebaseio.com",
-    projectId: "real-time-map-717f6",
-    storageBucket: "real-time-map-717f6.firebasestorage.app",
-    messagingSenderId: "407674707547",
-    appId: "1:407674707547:web:16edde5050d0335b28a97e"
-};
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
 
 // Variable to store the last searched location
 let lastSearchedLocation = null;
@@ -121,7 +108,20 @@ map.on('contextmenu', (e) => {
         }
     });
 });
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyByg7gneIEDzswTRhRi9fB--LzriyuWvUQ",
+    authDomain: "real-time-map-717f6.firebaseapp.com",
+    databaseURL: "https://real-time-map-717f6-default-rtdb.firebaseio.com",
+    projectId: "real-time-map-717f6",
+    storageBucket: "real-time-map-717f6.firebasestorage.app",
+    messagingSenderId: "407674707547",
+    appId: "1:407674707547:web:16edde5050d0335b28a97e"
+};
 
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
 // Listen for new flags in Firebase and add them to the map
 database.ref('flags').on('child_added', (snapshot) => {
     const { lat, lng } = snapshot.val();
