@@ -5,7 +5,7 @@
 
 .add-flag-button {
     position: absolute;
-    top: 10px; /* Adjust the distance from the top */
+    bottom: 10px; /* Adjust the distance from the bottom */
     left: 50%; /* Center horizontally */
     transform: translateX(-50%); /* Adjust for centering */
     z-index: 1000; /* Ensure it appears above the map */

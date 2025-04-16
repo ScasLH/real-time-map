@@ -59,7 +59,7 @@ addFlagButton.onAdd = function() {
             // Add the marker to the map
             const marker = L.marker([lat, lng], { 
                 icon: L.icon({ 
-                    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Red_flag_icon.png', 
+                    iconUrl: 'https://i.imgur.com/6D3Wc13.png', // New red flag image
                     iconSize: [25, 41] 
                 }) 
             }).addTo(map);
@@ -127,7 +127,7 @@ database.ref('flags').on('child_added', (snapshot) => {
     const { lat, lng } = snapshot.val();
     const marker = L.marker([lat, lng], { 
         icon: L.icon({ 
-            iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Red_flag_icon.png', 
+            iconUrl: 'https://i.imgur.com/6D3Wc13.png', // New red flag image
             iconSize: [25, 41] 
         }) 
     }).addTo(map);
