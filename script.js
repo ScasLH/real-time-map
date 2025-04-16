@@ -10,7 +10,7 @@ L.Control.geocoder({
     defaultMarkGeocode: false
 })
 .on('markgeocode', function(e) {
-    const { center } = e.geocode; // Get the center of the searched location
+    const { center, bbox } = e.geocode; // Get the center and bounding box of the searched location
     const { lat, lng } = center;
 
     // Add a red flag at the searched location
@@ -32,6 +32,14 @@ L.Control.geocoder({
 
     // Store marker reference for deletion
     marker._firebaseKey = flagRef.key;
+
+    // Add a non-interactive polygon to highlight the searched area
+    const poly = L.polygon([
+        bbox.getSouthEast(),
+        bbox.getNorthEast(),
+        bbox.getNorthWest(),
+        bbox.getSouthWest()
+    ], { interactive: false }).addTo(map);
 
     // Center the map on the searched location
     map.setView([lat, lng], 13);
