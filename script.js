@@ -1,4 +1,11 @@
+// Initialize the map
 const map = L.map('map').setView([0, 0], 2); // Default view
+
+// Add OpenStreetMap tiles
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
 // Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyByg7gneIEDzswTRhRi9fB--LzriyuWvUQ",
@@ -13,11 +20,6 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
-
-// Add OpenStreetMap tiles
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
 
 // Variable to store the last searched location
 let lastSearchedLocation = null;
@@ -41,7 +43,7 @@ L.Control.geocoder({
 .addTo(map);
 
 // Add a button to add a red flag at the searched location
-const addFlagButton = L.control({ position: 'git push -u origin main' }); // Use 'topleft' as a placeholder
+const addFlagButton = L.control({ position: 'bottomleft' }); // Use 'bottomleft' as a placeholder
 addFlagButton.onAdd = function() {
     const button = L.DomUtil.create('button', 'add-flag-button');
     button.innerHTML = 'Add Red Flag';
@@ -59,7 +61,7 @@ addFlagButton.onAdd = function() {
             // Add the marker to the map
             const marker = L.marker([lat, lng], { 
                 icon: L.icon({ 
-                    iconUrl: 'https://media.istockphoto.com/id/1362824628/vector/red-flag-icon-concept-of-pointer-tag-and-important-sign-vector-triangle-silk-on-stick.jpg?s=612x612&w=0&k=20&c=gDoU6LK0OZ7aNyz9yXj5bCjB15bXETDkZkjOaI4ICd8=', // New red flag image
+                    iconUrl: 'https://i.imgur.com/6D3Wc13.png', // New red flag image
                     iconSize: [25, 41] 
                 }) 
             }).addTo(map);
@@ -96,8 +98,6 @@ if (navigator.geolocation) {
         map.setView([latitude, longitude], 13);
     });
 }
-
-
 
 // Allow users to delete their own flags by right-clicking
 map.on('contextmenu', (e) => {
