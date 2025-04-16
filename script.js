@@ -13,6 +13,8 @@ L.Control.geocoder({
     const { center, bbox } = e.geocode; // Get the center and bounding box of the searched location
     const { lat, lng } = center;
 
+    console.log("Searched location:", lat, lng); // Debugging log
+
     // Add a red flag at the searched location
     const userId = 'anonymous'; // Replace with user authentication if needed
     const flagRef = database.ref('flags').push();
@@ -29,6 +31,8 @@ L.Control.geocoder({
             iconSize: [25, 41] 
         }) 
     }).addTo(map);
+
+    console.log("Marker added at:", lat, lng); // Debugging log
 
     // Store marker reference for deletion
     marker._firebaseKey = flagRef.key;
