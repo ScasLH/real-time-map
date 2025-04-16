@@ -34,7 +34,7 @@ console.log("Search bar added");
 
 // Add a button to add a red flag at the searched location
 console.log("Adding red flag button...");
-const addFlagButton = L.control({ position: 'bottom' }); // Use 'bottomleft' as a placeholder
+const addFlagButton = L.control({ position: 'bottomleft' }); // Use 'bottomleft' as a placeholder
 addFlagButton.onAdd = function() {
     const button = L.DomUtil.create('button', 'add-flag-button');
     button.innerHTML = 'Add Red Flag';
