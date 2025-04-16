@@ -27,7 +27,7 @@ L.Control.geocoder({
 .addTo(map);
 
 // Add a button to add a red flag at the searched location
-const addFlagButton = L.control({ position: 'topright' });
+const addFlagButton = L.control({ position: 'topleft' }); // Use 'topleft' as a placeholder
 addFlagButton.onAdd = function() {
     const button = L.DomUtil.create('button', 'add-flag-button');
     button.innerHTML = 'Add Red Flag';
@@ -41,13 +41,7 @@ addFlagButton.onAdd = function() {
             const { lat, lng } = lastSearchedLocation;
 
             // Add a red flag at the searched location
-            const userId = 'anonymous'; // Replace with user authentication if needed
-            const flagRef = database.ref('flags').push();
-            flagRef.set({
-                userId,
-                lat,
-                lng
-            });
+            console.log("Adding red flag at:", lat, lng);
 
             // Add the marker to the map
             const marker = L.marker([lat, lng], { 
@@ -57,7 +51,14 @@ addFlagButton.onAdd = function() {
                 }) 
             }).addTo(map);
 
-            console.log("Red flag added at:", lat, lng); // Debugging log
+            // Save the flag to Firebase
+            const userId = 'anonymous'; // Replace with user authentication if needed
+            const flagRef = database.ref('flags').push();
+            flagRef.set({
+                userId,
+                lat,
+                lng
+            });
 
             // Store marker reference for deletion
             marker._firebaseKey = flagRef.key;

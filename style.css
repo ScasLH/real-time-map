@@ -4,8 +4,17 @@
 }
 
 .add-flag-button {
+    position: absolute;
+    top: 10px; /* Adjust the distance from the top */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Adjust for centering */
+    z-index: 1000; /* Ensure it appears above the map */
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: #f8f9fa; /* Light gray background */
+    color: #333; /* Dark text color */
+    padding: 5px 10px;
+    cursor: pointer;
 }
