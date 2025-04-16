@@ -1,4 +1,18 @@
 const map = L.map('map').setView([0, 0], 2); // Default view
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyByg7gneIEDzswTRhRi9fB--LzriyuWvUQ",
+    authDomain: "real-time-map-717f6.firebaseapp.com",
+    databaseURL: "https://real-time-map-717f6-default-rtdb.firebaseio.com",
+    projectId: "real-time-map-717f6",
+    storageBucket: "real-time-map-717f6.firebasestorage.app",
+    messagingSenderId: "407674707547",
+    appId: "1:407674707547:web:16edde5050d0335b28a97e"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
 
 // Add OpenStreetMap tiles
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -40,8 +54,7 @@ addFlagButton.onAdd = function() {
         if (lastSearchedLocation) {
             const { lat, lng } = lastSearchedLocation;
 
-            // Add a red flag at the searched location
-            console.log("Adding red flag at:", lat, lng);
+            console.log("Adding red flag at:", lat, lng); // Debugging log
 
             // Add the marker to the map
             const marker = L.marker([lat, lng], { 
@@ -50,6 +63,8 @@ addFlagButton.onAdd = function() {
                     iconSize: [25, 41] 
                 }) 
             }).addTo(map);
+
+            console.log("Marker added to the map"); // Debugging log
 
             // Save the flag to Firebase
             const userId = 'anonymous'; // Replace with user authentication if needed
@@ -60,10 +75,13 @@ addFlagButton.onAdd = function() {
                 lng
             });
 
+            console.log("Flag saved to Firebase"); // Debugging log
+
             // Store marker reference for deletion
             marker._firebaseKey = flagRef.key;
         } else {
             alert('Please search for a location first!');
+            console.log("No location searched yet"); // Debugging log
         }
     });
 
@@ -79,20 +97,7 @@ if (navigator.geolocation) {
     });
 }
 
-// Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyByg7gneIEDzswTRhRi9fB--LzriyuWvUQ",
-    authDomain: "real-time-map-717f6.firebaseapp.com",
-    databaseURL: "https://real-time-map-717f6-default-rtdb.firebaseio.com",
-    projectId: "real-time-map-717f6",
-    storageBucket: "real-time-map-717f6.firebasestorage.app",
-    messagingSenderId: "407674707547",
-    appId: "1:407674707547:web:16edde5050d0335b28a97e"
-};
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
 
 // Allow users to delete their own flags by right-clicking
 map.on('contextmenu', (e) => {
@@ -129,4 +134,6 @@ database.ref('flags').on('child_added', (snapshot) => {
 
     // Store marker reference for deletion
     marker._firebaseKey = snapshot.key;
+
+    console.log("Flag added to the map from Firebase:", lat, lng); // Debugging log
 });
