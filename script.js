@@ -41,7 +41,7 @@ L.Control.geocoder({
 .addTo(map);
 
 // Add a button to add a red flag at the searched location
-const addFlagButton = L.control({ position: 'topleft' }); // Use 'topleft' as a placeholder
+const addFlagButton = L.control({ position: 'git push -u origin main' }); // Use 'topleft' as a placeholder
 addFlagButton.onAdd = function() {
     const button = L.DomUtil.create('button', 'add-flag-button');
     button.innerHTML = 'Add Red Flag';
@@ -59,7 +59,7 @@ addFlagButton.onAdd = function() {
             // Add the marker to the map
             const marker = L.marker([lat, lng], { 
                 icon: L.icon({ 
-                    iconUrl: 'https://i.imgur.com/6D3Wc13.png', // New red flag image
+                    iconUrl: 'https://media.istockphoto.com/id/1362824628/vector/red-flag-icon-concept-of-pointer-tag-and-important-sign-vector-triangle-silk-on-stick.jpg?s=612x612&w=0&k=20&c=gDoU6LK0OZ7aNyz9yXj5bCjB15bXETDkZkjOaI4ICd8=', // New red flag image
                     iconSize: [25, 41] 
                 }) 
             }).addTo(map);
