@@ -5,50 +5,70 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
+// Variable to store the last searched location
+let lastSearchedLocation = null;
+
 // Add a search bar to the map
 L.Control.geocoder({
     defaultMarkGeocode: false
 })
 .on('markgeocode', function(e) {
-    const { center, bbox } = e.geocode; // Get the center and bounding box of the searched location
+    const { center } = e.geocode; // Get the center of the searched location
     const { lat, lng } = center;
 
     console.log("Searched location:", lat, lng); // Debugging log
 
-    // Add a red flag at the searched location
-    const userId = 'anonymous'; // Replace with user authentication if needed
-    const flagRef = database.ref('flags').push();
-    flagRef.set({
-        userId,
-        lat,
-        lng
-    });
-
-    // Add the marker to the map
-    const marker = L.marker([lat, lng], { 
-        icon: L.icon({ 
-            iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Red_flag_icon.png', 
-            iconSize: [25, 41] 
-        }) 
-    }).addTo(map);
-
-    console.log("Marker added at:", lat, lng); // Debugging log
-
-    // Store marker reference for deletion
-    marker._firebaseKey = flagRef.key;
-
-    // Add a non-interactive polygon to highlight the searched area
-    const poly = L.polygon([
-        bbox.getSouthEast(),
-        bbox.getNorthEast(),
-        bbox.getNorthWest(),
-        bbox.getSouthWest()
-    ], { interactive: false }).addTo(map);
+    // Store the searched location
+    lastSearchedLocation = { lat, lng };
 
     // Center the map on the searched location
     map.setView([lat, lng], 13);
 })
 .addTo(map);
+
+// Add a button to add a red flag at the searched location
+const addFlagButton = L.control({ position: 'topright' });
+addFlagButton.onAdd = function() {
+    const button = L.DomUtil.create('button', 'add-flag-button');
+    button.innerHTML = 'Add Red Flag';
+    button.style.backgroundColor = 'white';
+    button.style.padding = '5px';
+    button.style.cursor = 'pointer';
+
+    // Add click event to the button
+    L.DomEvent.on(button, 'click', () => {
+        if (lastSearchedLocation) {
+            const { lat, lng } = lastSearchedLocation;
+
+            // Add a red flag at the searched location
+            const userId = 'anonymous'; // Replace with user authentication if needed
+            const flagRef = database.ref('flags').push();
+            flagRef.set({
+                userId,
+                lat,
+                lng
+            });
+
+            // Add the marker to the map
+            const marker = L.marker([lat, lng], { 
+                icon: L.icon({ 
+                    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Red_flag_icon.png', 
+                    iconSize: [25, 41] 
+                }) 
+            }).addTo(map);
+
+            console.log("Red flag added at:", lat, lng); // Debugging log
+
+            // Store marker reference for deletion
+            marker._firebaseKey = flagRef.key;
+        } else {
+            alert('Please search for a location first!');
+        }
+    });
+
+    return button;
+};
+addFlagButton.addTo(map);
 
 // Get user's location
 if (navigator.geolocation) {
@@ -72,20 +92,6 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const database = firebase.database();
-
-// Add a red flag when the user clicks on the map
-map.on('click', (e) => {
-    const { lat, lng } = e.latlng;
-    const userId = 'anonymous'; // Replace with user authentication if needed
-
-    // Save to Firebase
-    const flagRef = database.ref('flags').push();
-    flagRef.set({
-        userId,
-        lat,
-        lng
-    });
-});
 
 // Allow users to delete their own flags by right-clicking
 map.on('contextmenu', (e) => {
