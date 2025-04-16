@@ -5,6 +5,22 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
 
+// Add a search bar to the map
+L.Control.geocoder({
+    defaultMarkGeocode: false
+})
+.on('markgeocode', function(e) {
+    const bbox = e.geocode.bbox;
+    const poly = L.polygon([
+        bbox.getSouthEast(),
+        bbox.getNorthEast(),
+        bbox.getNorthWest(),
+        bbox.getSouthWest()
+    ]).addTo(map);
+    map.fitBounds(poly.getBounds());
+})
+.addTo(map);
+
 // Get user's location
 if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(position => {
@@ -65,7 +81,12 @@ map.on('contextmenu', (e) => {
 
 database.ref('flags').on('child_added', (snapshot) => {
     const { lat, lng } = snapshot.val();
-    const marker = L.marker([lat, lng], { icon: L.icon({ iconUrl: 'red-flag-icon.png', iconSize: [25, 41] }) }).addTo(map);
+    const marker = L.marker([lat, lng], { 
+        icon: L.icon({ 
+            iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e7/Red_flag_icon.png', 
+            iconSize: [25, 41] 
+        }) 
+    }).addTo(map);
 
     // Store marker reference for deletion
     marker._firebaseKey = snapshot.key;
