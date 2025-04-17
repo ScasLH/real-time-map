@@ -53,7 +53,7 @@ addFlagButton.onAdd = function() {
             // Add the marker to the map
             const marker = L.marker([lat, lng], { 
                 icon: L.icon({ 
-                    iconUrl: 'https://drive.google.com/file/d/1njcZxEHukleBBkh9hTSs_wD-0SEFRrqV/view?usp=sharing', // New red flag image
+                    iconUrl: 'https://t4.ftcdn.net/jpg/08/66/91/83/360_F_866918320_zkbEVmHck6XKtmnH5GrWJdD4MjmMLnBH.jpg', // New red flag image
                     iconSize: [25, 41] 
                 }) 
             }).addTo(map);
@@ -137,7 +137,7 @@ database.ref('flags').on('child_added', (snapshot) => {
     const { lat, lng } = snapshot.val();
     const marker = L.marker([lat, lng], { 
         icon: L.icon({ 
-            iconUrl: 'https://drive.google.com/file/d/1njcZxEHukleBBkh9hTSs_wD-0SEFRrqV/view?usp=sharing', // New red flag image
+            iconUrl: 'https://t4.ftcdn.net/jpg/08/66/91/83/360_F_866918320_zkbEVmHck6XKtmnH5GrWJdD4MjmMLnBH.jpg', // New red flag image
             iconSize: [25, 41] 
         }) 
     }).addTo(map);
