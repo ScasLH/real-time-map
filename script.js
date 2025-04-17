@@ -8,16 +8,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 }).addTo(map);
 console.log("Map initialized");
 
-// Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyByg7gneIEDzswTRhRi9fB--LzriyuWvUQ",
-    authDomain: "real-time-map-717f6.firebaseapp.com",
-    databaseURL: "https://real-time-map-717f6-default-rtdb.firebaseio.com",
-    projectId: "real-time-map-717f6",
-    storageBucket: "real-time-map-717f6.firebasestorage.app",
-    messagingSenderId: "407674707547",
-    appId: "1:407674707547:web:16edde5050d0335b28a97e"
-};
 
 
 // Variable to store the last searched location
@@ -131,7 +121,16 @@ map.on('contextmenu', (e) => {
     });
 });
 console.log("Right-click functionality added");
-
+// Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyByg7gneIEDzswTRhRi9fB--LzriyuWvUQ",
+    authDomain: "real-time-map-717f6.firebaseapp.com",
+    databaseURL: "https://real-time-map-717f6-default-rtdb.firebaseio.com",
+    projectId: "real-time-map-717f6",
+    storageBucket: "real-time-map-717f6.firebasestorage.app",
+    messagingSenderId: "407674707547",
+    appId: "1:407674707547:web:16edde5050d0335b28a97e"
+};
 // Listen for new flags in Firebase and add them to the map
 console.log("Listening for new flags in Firebase...");
 database.ref('flags').on('child_added', (snapshot) => {
