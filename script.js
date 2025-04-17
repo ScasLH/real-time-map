@@ -19,11 +19,6 @@ const firebaseConfig = {
     appId: "1:407674707547:web:16edde5050d0335b28a97e"
 };
 
-// Initialize Firebase
-console.log("Initializing Firebase...");
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
-console.log("Firebase initialized");
 
 // Variable to store the last searched location
 let lastSearchedLocation = null;
@@ -154,3 +149,8 @@ database.ref('flags').on('child_added', (snapshot) => {
     console.log("Flag added to the map from Firebase:", lat, lng); // Debugging log
 });
 console.log("Firebase listener added");
+// Initialize Firebase
+console.log("Initializing Firebase...");
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+console.log("Firebase initialized");
